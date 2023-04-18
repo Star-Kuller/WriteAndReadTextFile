@@ -2,7 +2,7 @@ namespace WriteAndReadTextFile;
 
 public class OpenCommand : ICommand
 {
-    private IWriter _writer;
+    private readonly IWriter _writer;
 
     public OpenCommand(IWriter wr)
     {

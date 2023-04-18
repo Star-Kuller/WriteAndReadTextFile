@@ -2,7 +2,7 @@ namespace WriteAndReadTextFile;
 
 public class ReadCommand : ICommand
 {
-    private IWriter _writer;
+    private readonly IWriter _writer;
 
     public ReadCommand(IWriter wr)
     {
@@ -10,13 +10,20 @@ public class ReadCommand : ICommand
     }
     public void Run(string path, string text)
     {
-        using (StreamReader reader = new StreamReader(path))
+        if (File.Exists(path))
         {
-            string[] readText = File.ReadAllLines(path);
-            foreach (string s in readText)
+            using (StreamReader reader = new StreamReader(path))
             {
-                _writer.Write(s);
+                string[] readText = File.ReadAllLines(path);
+                foreach (string s in readText)
+                {
+                    _writer.Write(s);
+                }
             }
+        }
+        else
+        {
+            _writer.Write("No file is open");
         }
     }
 }

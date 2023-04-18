@@ -13,6 +13,8 @@ public class ConsoleHandler : IWriter
    private ICommand _closeCommand;
    private ICommand _writeCommand;
    private ICommand _readCommand;
+   private ICommand _helpCommand;
+   private ICommand _deleteCommand;
 
    public ConsoleHandler(string path)
    {
@@ -32,10 +34,15 @@ public class ConsoleHandler : IWriter
        _closeCommand = new CloseCommand(this);
        _writeCommand = new WriteCommand(this);
        _readCommand = new ReadCommand(this);
+       _helpCommand = new HelpCommand(this);
+       _deleteCommand = new DeleteCommand(this);
        _openCommand.Run(_path, "");
    }
 
-   public void Read() => Рarse(Console.ReadLine()).Run(_path, _text);
+   public void Read()
+   {
+       Рarse(Console.ReadLine()).Run(_path, _text);
+   } 
 
    public void Write(string s) => Console.WriteLine(s);
 
@@ -71,6 +78,12 @@ public class ConsoleHandler : IWriter
                    break;
                case "/read":
                    _tempCommand = _readCommand;
+                   break;
+               case "/help":
+                   _tempCommand = _helpCommand;
+                   break;
+               case "/delete":
+                   _tempCommand = _deleteCommand;
                    break;
                default:
                    Write("Error: Unknown command");

@@ -4,7 +4,7 @@ namespace WriteAndReadTextFile;
 
 public class CloseCommand : ICommand
 {
-    private IWriter _writer;
+    private readonly IWriter _writer;
 
     public CloseCommand(IWriter wr)
     {

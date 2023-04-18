@@ -1,10 +1,10 @@
 namespace WriteAndReadTextFile;
 
-public class WriteCommand : ICommand
+public class DeleteCommand : ICommand
 {
     private readonly IWriter _writer;
 
-    public WriteCommand(IWriter wr)
+    public DeleteCommand(IWriter wr)
     {
         _writer = wr;
     }
@@ -12,14 +12,12 @@ public class WriteCommand : ICommand
     {
         if (File.Exists(path))
         {
-            using (StreamWriter writer = new StreamWriter(path, true)) 
-            { 
-                writer.WriteLine($"{System.Environment.UserName} {DateTime.Now}: {text}"); 
-            }
+            File.Delete(path);
+            _writer.Write($"File {path} has been deleted \nDon't try to add text to a file before opening another file");
         }
         else
         {
             _writer.Write("No file is open");
         }
-    }
+    }  
 }
