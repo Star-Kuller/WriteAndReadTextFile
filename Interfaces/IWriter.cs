@@ -2,5 +2,5 @@
 
 public interface IWriter
 {
-    void Write(string s);
+    public void Write(string s);
 }

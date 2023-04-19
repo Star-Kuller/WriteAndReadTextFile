@@ -1,6 +1,6 @@
 namespace WriteAndReadTextFile.Parser;
 
-public class OpenChainLink : AbsChainLink
+public sealed class OpenChainLink : AbsChainLink
 {
     private readonly ICommand _returnCommand;
     private readonly string _commandName;

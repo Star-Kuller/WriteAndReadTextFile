@@ -10,21 +10,13 @@ public class ConsoleHandler : IWriter
    private readonly SimpleChainLink _parserChain;
    private string _cachePath = "C://MyProjects/WriteAndReadTextFile/test.txt";
    private string _text = "";
-   private ICommand? _tempCommand = null;
+   private ICommand? _tempCommand;
 
    public ConsoleHandler(string cachePath)
    {
        if (!string.IsNullOrWhiteSpace(cachePath))
        {
-           this._cachePath = cachePath;
-           if (cachePath[cachePath.Length-1] == '/')
-           {
-               _cachePath += "test.txt";
-           }
-           else
-           {
-               _cachePath += "/test.txt";
-           }
+           NewPath(cachePath);
        }
        _parserChain = new SimpleChainLink(new CloseCommand(this),"/close");
        SimpleChainLink deleteChainLink = new SimpleChainLink(new DeleteCommand(this),"/delete");
