@@ -13,7 +13,7 @@ public class WriteCommand : ICommand
         if (File.Exists(path))
         {
             using (StreamWriter writer = new StreamWriter(path, true)) 
-            { 
+            {
                 writer.WriteLine($"{System.Environment.UserName} {DateTime.Now}: {text}"); 
             }
         }
