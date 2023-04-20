@@ -10,15 +10,22 @@ public class OpenCommand : ICommand
     }
     public void Run(string path, string text)
     {
-        bool file = File.Exists(path);
-        using (File.Open(path, FileMode.OpenOrCreate));
-        if (file)
+        try
         {
-            _writer.Write($"File {path} has been opened");
+            bool file = File.Exists(path);
+            using (File.Open(path, FileMode.OpenOrCreate));
+            if (file)
+            {
+                _writer.Write($"File {path} has been opened");
+            }
+            else
+            {
+                _writer.Write($"File {path} has been created and opened");
+            }
         }
-        else
+        catch (Exception e)
         {
-            _writer.Write($"File {path} has been created and opened");
+            _writer.Write($"Error: error in path");
         }
     }  
 }

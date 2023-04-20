@@ -10,14 +10,21 @@ public class DeleteCommand : ICommand
     }
     public void Run(string path, string text)
     {
-        if (File.Exists(path))
+        try
         {
-            File.Delete(path);
-            _writer.Write($"File {path} has been deleted \nDon't try to add text to a file before opening another file");
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                _writer.Write($"File {path} has been deleted \nDon't try to add text to a file before opening another file");
+            }
+            else
+            {
+                _writer.Write("No file is open");
+            }
         }
-        else
-        {
-            _writer.Write("No file is open");
+        catch (Exception e) 
+        { 
+            _writer.Write($"Error: failed to delete file"); 
         }
     }  
 }

@@ -15,21 +15,11 @@ public sealed class OpenChainLink : AbsChainLink
     }
 
     public override ICommand ReturnCommand(string inputString)
-    { 
-        string inputCommand = "";
-        string tempPath = "";
-        foreach (char c in inputString)
+    {
+        string[] words = inputString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        if (words[0].ToLower() == _commandName)
         {
-            if(c == ' ') break;
-            inputCommand += c;
-        }
-        for (int i = inputCommand.Length+1; i < inputString.Length; i++)
-        {
-            tempPath += inputString[i];
-        }
-        if (inputCommand.ToLower() == _commandName)
-        {
-            _consoleHandler.NewPath(tempPath);
+            _consoleHandler.NewPath(words[1]);
             return _returnCommand;
         }
         return base.ReturnCommand(inputString);

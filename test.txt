@@ -1,3 +1,0 @@
-Дмитрий 19.04.2023 5:36:10: test test
-Дмитрий 19.04.2023 5:37:04: Test TEEEETSTETE
-Дмитрий 19.04.2023 5:37:18:     /help <- commands should not work if the first character is not '/'

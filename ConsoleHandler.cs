@@ -8,16 +8,12 @@ public class ConsoleHandler : IWriter
 {
     private readonly ICommand _writeCommand;
    private readonly SimpleChainLink _parserChain;
-   private string _cachePath = "C://MyProjects/WriteAndReadTextFile/test.txt";
+   private string _cachePath = "test.txt";
    private string _text = "";
    private ICommand? _tempCommand;
 
-   public ConsoleHandler(string cachePath)
+   public ConsoleHandler()
    {
-       if (!string.IsNullOrWhiteSpace(cachePath))
-       {
-           NewPath(cachePath);
-       }
        _parserChain = new SimpleChainLink(new CloseCommand(this),"/close");
        SimpleChainLink deleteChainLink = new SimpleChainLink(new DeleteCommand(this),"/delete");
        SimpleChainLink helpChainLink = new SimpleChainLink(new HelpCommand(this),"/help");
@@ -35,7 +31,9 @@ public class ConsoleHandler : IWriter
 
    public void Read()
    {
-       Рarse(Console.ReadLine()).Run(_cachePath, _text);
+       ICommand? command = Рarse(Console.ReadLine());
+       if (command is not null) 
+           command.Run(_cachePath, _text);
    } 
 
    public void Write(string s) => Console.WriteLine(s);
@@ -46,10 +44,7 @@ public class ConsoleHandler : IWriter
        {
            _tempCommand = _parserChain.ReturnCommand(inputString);
            if (_tempCommand == null)
-           {
-               Write("Error: Unknown command");
-               throw new ArgumentException();
-           }
+               Write("Error: unknown command");
        }
        else
        {

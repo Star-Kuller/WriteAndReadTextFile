@@ -10,16 +10,23 @@ public class WriteCommand : ICommand
     }
     public void Run(string path, string text)
     {
-        if (File.Exists(path))
+        try
         {
-            using (StreamWriter writer = new StreamWriter(path, true)) 
+            if (File.Exists(path))
             {
-                writer.WriteLine($"{System.Environment.UserName} {DateTime.Now}: {text}"); 
+                using (StreamWriter writer = new StreamWriter(path, true)) 
+                {
+                    writer.WriteLine($"{System.Environment.UserName} {DateTime.Now}: {text}"); 
+                }
+            }
+            else
+            {
+                _writer.Write("No file is open");
             }
         }
-        else
+        catch (Exception e)
         {
-            _writer.Write("No file is open");
+            _writer.Write("Error: failed to write to file");
         }
     }
 }

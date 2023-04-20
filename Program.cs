@@ -3,9 +3,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.Write("Enter file path: ");
-        string initialPath = Console.ReadLine();
-        ConsoleHandler consoleHandler = new ConsoleHandler(initialPath);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
         while (true)
         {
             consoleHandler.Read();

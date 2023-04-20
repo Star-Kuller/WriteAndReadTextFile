@@ -12,8 +12,6 @@ public abstract class AbsChainLink : IParserChainLink
     
     public virtual ICommand ReturnCommand(string inputString)
     {
-        if (_nextChainLink != null)
-            return _nextChainLink.ReturnCommand(inputString);
-        return null;
+        return _nextChainLink.ReturnCommand(inputString);
     }
 }
