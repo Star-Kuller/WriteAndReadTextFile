@@ -3,10 +3,12 @@ namespace WriteAndReadTextFile;
 public class WriteCommand : ICommand
 {
     private readonly IWriter _writer;
+    private readonly IGetUserManager _getUserManager;
 
-    public WriteCommand(IWriter wr)
+    public WriteCommand(IWriter wr, IGetUserManager getUserManager)
     {
         _writer = wr;
+        _getUserManager = getUserManager;
     }
     public void Run(string path, string text)
     {
@@ -14,15 +16,18 @@ public class WriteCommand : ICommand
         {
             if (File.Exists(path))
             {
-                using (StreamWriter writer = new StreamWriter(path, true)) 
+                if(_getUserManager.UserManager.CurrentUser is not null)
                 {
-                    writer.WriteLine($"{System.Environment.UserName} {DateTime.Now}: {text}"); 
+                    using (StreamWriter writer = new StreamWriter(path, true))
+                    {
+                        writer.WriteLine($"{_getUserManager.UserManager.CurrentUser.Name} {DateTime.Now}: {text}");
+                    }
+                    return;
                 }
+                _writer.Write("Unlogined users can't write");
+                return;
             }
-            else
-            {
-                _writer.Write("No file is open");
-            }
+            _writer.Write("No file is open");
         }
         catch (Exception e)
         {

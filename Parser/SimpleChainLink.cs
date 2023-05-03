@@ -13,7 +13,8 @@ public sealed class SimpleChainLink : AbsChainLink
 
     public override ICommand ReturnCommand(string inputString)
     {
-        if (inputString.ToLower() == _commandName)
+        string[] words = inputString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        if (words[0].ToLower() == _commandName)
             return _returnCommand;
         return base.ReturnCommand(inputString);
     }
