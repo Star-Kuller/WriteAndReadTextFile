@@ -19,8 +19,11 @@ public class ConsoleHandler : IWriter, IGetUserManager
        SimpleChainLink deleteChainLink = new SimpleChainLink(new DeleteCommand(this),"/delete");
        SimpleChainLink helpChainLink = new SimpleChainLink(new HelpCommand(this),"/help");
        SimpleChainLink readChainLink = new SimpleChainLink(new ReadCommand(this),"/read");
-       SimpleChainLink registerChainLink = new SimpleChainLink(new RegisterCommand(UserManager),"/register");
+       SimpleChainLink registerChainLink = new SimpleChainLink(new RegisterCommand(UserManager, this),"/register");
        SimpleChainLink loginChainLink = new SimpleChainLink(new LoginCommand(UserManager, this),"/login");
+       SimpleChainLink logoutChainLink = new SimpleChainLink(new LogoutCommand(UserManager),"/logout");
+       SimpleChainLink setNumberChainLink = new SimpleChainLink(new SetNumberCommand(UserManager, this),"/setnumber");
+       SimpleChainLink getNumberChainLink = new SimpleChainLink(new GetNumberCommand(UserManager),"/number");
        OpenChainLink openChainLink = new OpenChainLink(new OpenCommand(this),"/open", this);
        _parserChain.SetNextChainLink(deleteChainLink);
        deleteChainLink.SetNextChainLink(helpChainLink);
@@ -28,6 +31,9 @@ public class ConsoleHandler : IWriter, IGetUserManager
        openChainLink.SetNextChainLink(readChainLink);
        readChainLink.SetNextChainLink(registerChainLink);
        registerChainLink.SetNextChainLink(loginChainLink);
+       loginChainLink.SetNextChainLink(logoutChainLink);
+       logoutChainLink.SetNextChainLink(setNumberChainLink);
+       setNumberChainLink.SetNextChainLink(getNumberChainLink);
        
        ICommand openCommand = new OpenCommand(this);
        _writeCommand = new WriteCommand(this, this);
@@ -36,7 +42,10 @@ public class ConsoleHandler : IWriter, IGetUserManager
 
    public void Read()
    {
-       ICommand? command = Рarse(Console.ReadLine());
+       string? str = Console.ReadLine();
+       if(string.IsNullOrWhiteSpace(str))
+           return;
+       ICommand? command = Рarse(str);
        if (command is not null) 
            command.Run(_cachePath, _text);
    } 
