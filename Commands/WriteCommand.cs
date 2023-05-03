@@ -24,7 +24,7 @@ public class WriteCommand : ICommand
                     }
                     return;
                 }
-                _writer.Write("Unlogined users can't write");
+                _writer.Write("Unlogged users cannot write");
                 return;
             }
             _writer.Write("No file is open");

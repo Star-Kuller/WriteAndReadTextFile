@@ -20,12 +20,14 @@ public class ConsoleHandler : IWriter, IGetUserManager
        SimpleChainLink helpChainLink = new SimpleChainLink(new HelpCommand(this),"/help");
        SimpleChainLink readChainLink = new SimpleChainLink(new ReadCommand(this),"/read");
        SimpleChainLink registerChainLink = new SimpleChainLink(new RegisterCommand(UserManager),"/register");
+       SimpleChainLink loginChainLink = new SimpleChainLink(new LoginCommand(UserManager, this),"/login");
        OpenChainLink openChainLink = new OpenChainLink(new OpenCommand(this),"/open", this);
        _parserChain.SetNextChainLink(deleteChainLink);
        deleteChainLink.SetNextChainLink(helpChainLink);
        helpChainLink.SetNextChainLink(openChainLink);
        openChainLink.SetNextChainLink(readChainLink);
        readChainLink.SetNextChainLink(registerChainLink);
+       registerChainLink.SetNextChainLink(loginChainLink);
        
        ICommand openCommand = new OpenCommand(this);
        _writeCommand = new WriteCommand(this, this);

@@ -19,29 +19,12 @@ public class UserManager
         CurrentUser = null;
     }
 
-    public void Login(string name, string password)
+    public void Login(User? user)
     {
-        User? findUser = null;
-        foreach (var user in Users)
-        {
-            if (user.Name == name)
-            {
-                findUser = user;
-                break;
-            }
-        }
-        if (findUser == null)
-        {
-            _writer.Write("Error: User unfinded");
+        if(user is null)
             return;
-        }
-        int passwordHash = password.GetHashCode();
-        if (passwordHash == findUser.PasswordHash)
-        {
-            CurrentUser = findUser;
-            return;
-        }
-        _writer.Write("Error: You should not pass!!");
+        _writer.Write($"Welcome, {user.Name}!");
+        CurrentUser = user;
     }
 
     public void Register(string name, string password)
