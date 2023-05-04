@@ -34,7 +34,7 @@ public class LoginCommand : ICommand
             _writer.Write("Error: User is not found");
             return findUser;
         }
-        int passwordHash = password.GetHashCode();
+        string passwordHash = SHA256HeshGenerator.ComputeSHA256(password);
         if (passwordHash == findUser.PasswordHash)
         {
             return findUser;

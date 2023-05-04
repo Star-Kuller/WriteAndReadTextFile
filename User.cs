@@ -4,9 +4,9 @@ public class User
 {
     public string Name { get; }
     public string? Number { get; set; }
-    public int PasswordHash { get; }
+    public string PasswordHash { get; }
 
-    public User(string name, int passwordHash)
+    public User(string name, string passwordHash)
     {
         Name = name;
         PasswordHash = passwordHash;

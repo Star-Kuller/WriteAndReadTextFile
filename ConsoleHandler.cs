@@ -24,6 +24,8 @@ public class ConsoleHandler : IWriter, IGetUserManager
        SimpleChainLink logoutChainLink = new SimpleChainLink(new LogoutCommand(UserManager),"/logout");
        SimpleChainLink setNumberChainLink = new SimpleChainLink(new SetNumberCommand(UserManager, this),"/setnumber");
        SimpleChainLink getNumberChainLink = new SimpleChainLink(new GetNumberCommand(UserManager),"/number");
+       SimpleChainLink showUsersChainLink = new SimpleChainLink(new ShowAllUsersCommand(UserManager, this),"/users");
+       SimpleChainLink deleteUsersChainLink = new SimpleChainLink(new DeleteUserCommand(UserManager),"/deletemyaccount");
        OpenChainLink openChainLink = new OpenChainLink(new OpenCommand(this),"/open", this);
        _parserChain.SetNextChainLink(deleteChainLink);
        deleteChainLink.SetNextChainLink(helpChainLink);
@@ -34,6 +36,8 @@ public class ConsoleHandler : IWriter, IGetUserManager
        loginChainLink.SetNextChainLink(logoutChainLink);
        logoutChainLink.SetNextChainLink(setNumberChainLink);
        setNumberChainLink.SetNextChainLink(getNumberChainLink);
+       getNumberChainLink.SetNextChainLink(showUsersChainLink);
+       showUsersChainLink.SetNextChainLink(deleteUsersChainLink);
        
        ICommand openCommand = new OpenCommand(this);
        _writeCommand = new WriteCommand(this, this);

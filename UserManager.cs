@@ -1,12 +1,10 @@
-using System.Security.Cryptography;
-
 namespace WriteAndReadTextFile;
 
 public class UserManager
 {
     public readonly List<User> Users = new List<User>() { };
     private readonly IWriter _writer;
-
+    
     public UserManager(IWriter writer)
     {
         _writer = writer;
@@ -32,7 +30,7 @@ public class UserManager
 
     public void Register(string name, string password)
     {
-        Users.Add(new User(name, password.GetHashCode()));
+        Users.Add(new User(name, SHA256HeshGenerator.ComputeSHA256(password)));
         _writer.Write("User has be created");
         Login(Users[Users.Count-1]);
     }
@@ -69,5 +67,24 @@ public class UserManager
             return;
         }
         _writer.Write($"{CurrentUser.Name} has a number {CurrentUser.Number}");
+    }
+
+    public void Delete()
+    {
+        if (CurrentUser is null)
+        {
+            _writer.Write("You are not authorized");
+            return;
+        }
+        for (int i = 0; i < Users.Count; i++)
+        {
+            if (Users[i].Name == CurrentUser.Name)
+            {
+                Users.Remove(Users[i]);
+                _writer.Write($"User \"{CurrentUser.Name}\" deleted");
+                CurrentUser = null;
+                return;
+            }
+        }
     }
 }
