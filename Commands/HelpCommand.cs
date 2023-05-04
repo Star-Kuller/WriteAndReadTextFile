@@ -11,11 +11,20 @@ public class HelpCommand : ICommand
     public void Run(string path, string text)
     {
         string[] helpText =
-        { "/help - Show a list of commands",
-         "/open <path> - Open or create a file \"test.txt\"",
-         "/close - Close this program",
-         "/read - Read all lines from an open file",
-         "/delete - Delete an opened file"
+        { 
+            "_______________________________________________",
+            "/help - Show a list of commands", 
+            "/open <path> - Open or create a file \"test.txt\"", 
+            "/close - Close this program", 
+            "/read - Read all lines from an open file", 
+            "/delete - Delete an opened file", 
+            "/register <AccountName> <Password> - Register new account", 
+            "/login <AccountName> <Password> - Sign in", 
+            "/SetNumber <Number> - Add number for current account", 
+            "/number - Show number for current account", 
+            "/users - Show users list", 
+            "/DeleteMyAccount - Delete current account",
+            "_______________________________________________"
         };
         foreach (string s in helpText)
         {

@@ -17,10 +17,12 @@ public class ReadCommand : ICommand
                 using (StreamReader reader = new StreamReader(path))
                 {
                     string[] readText = File.ReadAllLines(path);
+                    _writer.Write("_______________________________________________");
                     foreach (string s in readText)
                     {
                         _writer.Write(s);
                     }
+                    _writer.Write("_______________________________________________");
                 }
             }
             else

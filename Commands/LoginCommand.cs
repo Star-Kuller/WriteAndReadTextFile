@@ -39,7 +39,7 @@ public class LoginCommand : ICommand
         {
             return findUser;
         }
-        _writer.Write("Error: You shall not pass!!");
+        _writer.Write("Error: Incorrect password (You shall not pass!!)");
         return null;
     }
 }

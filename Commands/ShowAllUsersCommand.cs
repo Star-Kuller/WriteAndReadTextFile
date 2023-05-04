@@ -16,7 +16,9 @@ public class ShowAllUsersCommand : ICommand
     public void Run(string path, string inputString)
     {
         _writer.Write($"Users total: {_userManager.Users.Count}\n" +
-                      $"         User         |         Number         ");
+                      $"_______________________________________________\n" +
+                      $"         User         |         Number         \n" +
+                      $"-----------------------------------------------");
         foreach (var user in _userManager.Users)
         {
             StringBuilder sb = new StringBuilder();
@@ -26,5 +28,6 @@ public class ShowAllUsersCommand : ICommand
             }
             _writer.Write($"  {user.Name}{sb}|  {user.Number}");
         }
+        _writer.Write("______________________|________________________");
     }
 }

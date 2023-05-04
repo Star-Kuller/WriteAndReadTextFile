@@ -1,13 +1,21 @@
+using System.Text.Json;
+
 namespace WriteAndReadTextFile;
 
 public class UserManager
 {
-    public readonly List<User> Users = new List<User>() { };
+    public List<User> Users { get; private set; }
     private readonly IWriter _writer;
     
     public UserManager(IWriter writer)
     {
         _writer = writer;
+        DeserializeUsers();
+    }
+    
+    ~UserManager()
+    {
+        SerializeUsers();
     }
 
     public User? CurrentUser { get; private set; }
@@ -33,6 +41,7 @@ public class UserManager
         Users.Add(new User(name, SHA256HeshGenerator.ComputeSHA256(password)));
         _writer.Write("User has be created");
         Login(Users[Users.Count-1]);
+        SerializeUsers();
     }
 
     public void SetPhoneNumber(string number)
@@ -52,6 +61,7 @@ public class UserManager
                 return;
             }
         }
+        SerializeUsers();
     }
     
     public void GetPhoneNumber()
@@ -83,8 +93,34 @@ public class UserManager
                 Users.Remove(Users[i]);
                 _writer.Write($"User \"{CurrentUser.Name}\" deleted");
                 CurrentUser = null;
+                SerializeUsers();
                 return;
             }
+        }
+    }
+
+    private async void SerializeUsers()
+    {
+        using (FileStream fs = new FileStream("users.json", FileMode.Create))
+        {
+            await JsonSerializer.SerializeAsync(fs, Users);
+        }
+    }
+    
+    private async void DeserializeUsers()
+    {
+        using (FileStream fs = new FileStream("users.json", FileMode.OpenOrCreate))
+        {
+            try
+            {
+                Users = await JsonSerializer.DeserializeAsync<List<User>>(fs);
+            }
+            catch
+            {
+                // ignored
+            }
+            if(Users is null)
+                Users = new List<User>();
         }
     }
 }
