@@ -10,12 +10,12 @@ public class UserManager
     public UserManager(IWriter writer)
     {
         _writer = writer;
-        DeserializeUsers();
+        Load();
     }
     
     ~UserManager()
     {
-        SerializeUsers();
+        Save();
     }
 
     public User? CurrentUser { get; private set; }
@@ -41,7 +41,7 @@ public class UserManager
         Users.Add(new User(name, SHA256HeshGenerator.ComputeSHA256(password)));
         _writer.Write("User has be created");
         Login(Users[Users.Count-1]);
-        SerializeUsers();
+        Save();
     }
 
     public void SetPhoneNumber(string number)
@@ -61,7 +61,7 @@ public class UserManager
                 return;
             }
         }
-        SerializeUsers();
+        Save();
     }
     
     public void GetPhoneNumber()
@@ -93,13 +93,13 @@ public class UserManager
                 Users.Remove(Users[i]);
                 _writer.Write($"User \"{CurrentUser.Name}\" deleted");
                 CurrentUser = null;
-                SerializeUsers();
+                Save();
                 return;
             }
         }
     }
 
-    private async void SerializeUsers()
+    private async void Save()
     {
         using (FileStream fs = new FileStream("users.json", FileMode.Create))
         {
@@ -107,7 +107,7 @@ public class UserManager
         }
     }
     
-    private async void DeserializeUsers()
+    private async void Load()
     {
         using (FileStream fs = new FileStream("users.json", FileMode.OpenOrCreate))
         {
